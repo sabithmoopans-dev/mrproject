@@ -1,10 +1,7 @@
-function getJobs() {
-  return JSON.parse(localStorage.getItem("jobs")) || [];
-}
-
-function saveJobs(jobs) {
-  localStorage.setItem("jobs", JSON.stringify(jobs));
-}
+const supabase = window.supabase.createClient(
+  "https://rypkoxdenkuhmlyzbbnm.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5cGtveGRlbmt1aG1seXpiYm5tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTg2NDgsImV4cCI6MjA5MTk5NDY0OH0.nXu3HO5_steM5W4I4jtTQ3oT3OwwvZrh5jaBDT6gSW8"
+);
 
 function openModal() {
   document.getElementById("modal").style.display = "flex";
@@ -14,44 +11,39 @@ function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-function createJob() {
+async function createJob() {
   const flat = document.getElementById("flat").value;
   const issue = document.getElementById("issue").value;
   const priority = document.getElementById("priority").value;
 
   if (!flat || !issue) return alert("Fill all fields");
 
-  const jobs = getJobs();
+  await supabase.from("jobs").insert([
+    { flat, issue, priority, status: "New" }
+  ]);
 
-  jobs.push({
-    flat,
-    issue,
-    priority,
-    status: "New",
-    time: new Date().toLocaleTimeString()
-  });
-
-  saveJobs(jobs);
   closeModal();
   loadJobs();
 }
 
-function changeStatus(index) {
-  const jobs = getJobs();
+async function changeStatus(id, currentStatus) {
+  let newStatus =
+    currentStatus === "New" ? "In Progress" :
+    currentStatus === "In Progress" ? "Completed" : "New";
 
-  if (jobs[index].status === "New")
-    jobs[index].status = "In Progress";
-  else if (jobs[index].status === "In Progress")
-    jobs[index].status = "Completed";
-  else
-    jobs[index].status = "New";
+  await supabase.from("jobs")
+    .update({ status: newStatus })
+    .eq("id", id);
 
-  saveJobs(jobs);
   loadJobs();
 }
 
-function loadJobs() {
-  const jobs = getJobs();
+async function loadJobs() {
+  const { data: jobs } = await supabase
+    .from("jobs")
+    .select("*")
+    .order("created_at", { ascending: false });
+
   const jobList = document.getElementById("jobList");
   jobList.innerHTML = "";
 
@@ -61,7 +53,7 @@ function loadJobs() {
   document.getElementById("completedJobs").innerText =
     jobs.filter(j => j.status === "Completed").length;
 
-  jobs.forEach((job, index) => {
+  jobs.forEach(job => {
     const priorityClass =
       job.priority === "High" ? "high" :
       job.priority === "Medium" ? "medium" : "low";
@@ -81,15 +73,14 @@ function loadJobs() {
 
         <div class="card-footer">
           <span class="badge ${priorityClass}">${job.priority}</span>
-          <button class="primary" onclick="changeStatus(${index})">
+          <button class="primary"
+            onclick="changeStatus('${job.id}', '${job.status}')">
             Change Status
           </button>
         </div>
 
-        <small>🕒 ${job.time}</small>
+        <small>🕒 ${new Date(job.created_at).toLocaleTimeString()}</small>
       </div>
     `;
   });
 }
-
-loadJobs();

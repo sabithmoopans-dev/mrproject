@@ -7,13 +7,13 @@
 
 body {
   background: #f2f4f8;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 
 header {
   background: #2563eb;
   color: white;
-  padding: 15px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,9 +38,9 @@ header {
 .card {
   background: white;
   padding: 15px;
-  border-radius: 15px;
+  border-radius: 16px;
   margin-bottom: 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .card-header {
@@ -50,7 +50,7 @@ header {
 }
 
 .badge {
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
   color: white;
@@ -93,6 +93,7 @@ button.primary {
   background: #2563eb;
   color: white;
   font-size: 28px;
+  border: none;
 }
 
 .modal {
@@ -109,7 +110,7 @@ button.primary {
   width: 90%;
   max-width: 350px;
   padding: 20px;
-  border-radius: 15px;
+  border-radius: 16px;
 }
 
 .modal-content input,
@@ -133,7 +134,7 @@ button.primary {
   background: white;
   display: flex;
   justify-content: space-around;
-  padding: 12px 0;
+  padding: 14px 0;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
 }
 
@@ -145,16 +146,4 @@ button.primary {
 .bottom-nav .active {
   color: #2563eb;
   font-weight: bold;
-}
-
-@media (min-width: 768px) {
-  .stats {
-    max-width: 800px;
-    margin: auto;
-  }
-
-  .job-list {
-    max-width: 800px;
-    margin: auto;
-  }
 }
