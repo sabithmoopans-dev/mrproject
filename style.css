@@ -147,3 +147,29 @@ button.primary {
   color: #2563eb;
   font-weight: bold;
 }
+
+.job-image {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.notes {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #555;
+}
+
+.notify-dot {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.card {
+  position: relative;
+}
