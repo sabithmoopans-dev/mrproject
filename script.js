@@ -1,6 +1,6 @@
 const supabase = window.supabase.createClient(
   "https://rypkoxdenkuhmlyzbbnm.supabase.co",
-  "YOUR_ANON_KEY_HERE"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5cGtveGRlbmt1aG1seXpiYm5tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTg2NDgsImV4cCI6MjA5MTk5NDY0OH0.nXu3HO5_steM5W4I4jtTQ3oT3OwwvZrh5jaBDT6gSW8"
 );
 
 let currentFilter = "ALL";
@@ -17,8 +17,8 @@ async function createJob() {
   const building = document.getElementById("building").value;
   const flat = document.getElementById("flat").value;
   const issue = document.getElementById("issue").value;
-  const priority = document.getElementById("priority").value;
   const notes = document.getElementById("notes").value;
+  const priority = document.getElementById("priority").value;
   const file = document.getElementById("image").files[0];
 
   if (!flat || !issue) return alert("Fill all fields");
@@ -28,15 +28,17 @@ async function createJob() {
   if (file) {
     const fileName = Date.now() + "_" + file.name;
 
-    await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("job-images")
       .upload(fileName, file);
 
-    const { data } = supabase.storage
-      .from("job-images")
-      .getPublicUrl(fileName);
+    if (!uploadError) {
+      const { data } = supabase.storage
+        .from("job-images")
+        .getPublicUrl(fileName);
 
-    imageUrl = data.publicUrl;
+      imageUrl = data.publicUrl;
+    }
   }
 
   await supabase.from("jobs").insert([
@@ -84,10 +86,15 @@ async function markAsRead(id) {
 }
 
 async function loadJobs() {
-  const { data: jobs } = await supabase
+  const { data: jobs, error } = await supabase
     .from("jobs")
     .select("*")
     .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
 
   const filtered = currentFilter === "ALL"
     ? jobs
@@ -112,12 +119,11 @@ async function loadJobs() {
       job.status === "New" ? "status-new" :
       job.status === "In Progress" ? "status-progress" : "status-done";
 
-    const unreadBadge = job.is_read ? "" :
-      `<span class="notify-dot"></span>`;
+    const unread = job.is_read ? "" : `<div class="notify-dot"></div>`;
 
     jobList.innerHTML += `
       <div class="card">
-        ${unreadBadge}
+        ${unread}
         <div class="card-header">
           <strong>🏢 ${job.building} • ${job.flat}</strong>
           <span class="badge ${statusClass}">${job.status}</span>
@@ -127,8 +133,7 @@ async function loadJobs() {
 
         ${job.notes ? `<p class="notes">📝 ${job.notes}</p>` : ""}
 
-        ${job.image_url ? 
-          `<img src="${job.image_url}" class="job-image">` : ""}
+        ${job.image_url ? `<img src="${job.image_url}" class="job-image">` : ""}
 
         <div class="card-footer">
           <span class="badge ${priorityClass}">${job.priority}</span>

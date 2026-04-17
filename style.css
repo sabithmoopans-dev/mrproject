@@ -7,7 +7,7 @@
 
 body {
   background: #f2f4f8;
-  padding-bottom: 90px;
+  padding-bottom: 100px;
 }
 
 header {
@@ -27,8 +27,20 @@ header {
   text-align: center;
 }
 
-.stats h2 {
-  font-size: 20px;
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 15px;
+  overflow-x: auto;
+}
+
+.filter-bar button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 .job-list {
@@ -36,11 +48,22 @@ header {
 }
 
 .card {
+  position: relative;
   background: white;
   padding: 15px;
   border-radius: 16px;
   margin-bottom: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.notify-dot {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .card-header {
@@ -71,16 +94,24 @@ header {
   margin-top: 10px;
 }
 
-button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.job-image {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.notes {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #555;
 }
 
 button.primary {
   background: #2563eb;
   color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
 }
 
 .fab {
@@ -102,74 +133,4 @@ button.primary {
   background: rgba(0,0,0,0.4);
   display: none;
   justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  width: 90%;
-  max-width: 350px;
-  padding: 20px;
-  border-radius: 16px;
-}
-
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: white;
-  display: flex;
-  justify-content: space-around;
-  padding: 14px 0;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
-}
-
-.bottom-nav div {
-  font-size: 14px;
-  color: gray;
-}
-
-.bottom-nav .active {
-  color: #2563eb;
-  font-weight: bold;
-}
-
-.job-image {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-.notes {
-  font-size: 13px;
-  margin-top: 5px;
-  color: #555;
-}
-
-.notify-dot {
-  width: 10px;
-  height: 10px;
-  background: red;
-  border-radius: 50%;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-
-.card {
-  position: relative;
-}
+  align-items: 
