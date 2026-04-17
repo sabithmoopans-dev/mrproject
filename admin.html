@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Maintenance System</title>
+  <title>Maintenance App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
 <!-- HEADER -->
-<div class="bg-white shadow p-4 flex justify-between items-center">
-  <div class="flex items-center gap-2">
-    <div class="bg-blue-600 text-white p-2 rounded-lg">🛠</div>
-    <h1 class="font-bold text-lg">Maintenance System</h1>
+<div class="bg-blue-600 text-white p-4 flex justify-between items-center shadow">
+  <h1 class="text-lg font-semibold">Maintenance</h1>
+  <span class="text-sm opacity-80">Admin</span>
+</div>
+
+<!-- STATS (Mobile Compact) -->
+<div class="flex justify-around bg-white py-4 shadow-sm text-center">
+  <div>
+    <p id="totalJobs" class="font-bold text-lg">0</p>
+    <p class="text-xs text-gray-500">Total</p>
   </div>
-  <div class="flex items-center gap-3">
-    <span class="text-sm text-gray-500">Admin Dashboard</span>
-    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+  <div>
+    <p id="openJobs" class="font-bold text-blue-600 text-lg">0</p>
+    <p class="text-xs text-gray-500">Open</p>
+  </div>
+  <div>
+    <p id="completedJobs" class="font-bold text-green-600 text-lg">0</p>
+    <p class="text-xs text-gray-500">Done</p>
   </div>
 </div>
 
-<div class="p-6">
+<!-- JOB CARDS -->
+<div id="jobs" class="p-4 space-y-4 pb-24"></div>
 
-<!-- STATS -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <div class="bg-white p-4 rounded-xl shadow text-center">
-    <p class="text-gray-500 text-sm">Total Jobs</p>
-    <p id="totalJobs" class="text-2xl font-bold">0</p>
-  </div>
-  <div class="bg-white p-4 rounded-xl shadow text-center">
-    <p class="text-gray-500 text-sm">Open Jobs</p>
-    <p id="openJobs" class="text-2xl font-bold text-blue-600">0</p>
-  </div>
-  <div class="bg-white p-4 rounded-xl shadow text-center">
-    <p class="text-gray-500 text-sm">Completed</p>
-    <p id="completedJobs" class="text-2xl font-bold text-green-600">0</p>
-  </div>
-</div>
-
-<!-- CREATE BUTTON -->
+<!-- FLOATING ACTION BUTTON -->
 <button onclick="openModal()"
-  class="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-xl mb-6 transition">
-  + Create Maintenance Job
+  class="fixed bottom-20 right-5 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg text-2xl">
+  +
 </button>
 
-<!-- JOB LIST -->
-<div id="jobs" class="space-y-4 pb-24"></div>
-
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-white shadow-inner flex justify-around py-3 text-sm">
+  <div class="text-blue-600">🏠 Home</div>
+  <div>📋 Jobs</div>
+  <div>🔔 Alerts</div>
+  <div>👤 Profile</div>
 </div>
 
-<!-- MODAL -->
-<div id="modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center">
-  <div class="bg-white p-6 rounded-xl w-96 shadow-xl">
-    <h2 class="font-bold mb-4 text-lg">Create Job</h2>
+<!-- CREATE JOB MODAL -->
+<div id="modal"
+  class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center">
+  <div class="bg-white w-11/12 p-5 rounded-2xl shadow-xl">
+    <h2 class="font-semibold text-lg mb-4">Create Job</h2>
 
-    <input id="flat" placeholder="Flat (A-203)"
-      class="border p-2 w-full mb-3 rounded">
+    <input id="flat" placeholder="Flat (C-105)"
+      class="border p-3 w-full mb-3 rounded-lg">
 
-    <input id="issue" placeholder="Issue"
-      class="border p-2 w-full mb-3 rounded">
+    <input id="issue" placeholder="Issue (Water Leak)"
+      class="border p-3 w-full mb-3 rounded-lg">
 
     <select id="priority"
-      class="border p-2 w-full mb-4 rounded">
+      class="border p-3 w-full mb-4 rounded-lg">
       <option>High</option>
       <option>Medium</option>
       <option>Low</option>
@@ -68,29 +68,15 @@
 
     <div class="flex gap-3">
       <button onclick="closeModal()"
-        class="w-1/2 bg-gray-300 py-2 rounded">
+        class="w-1/2 bg-gray-300 py-2 rounded-lg">
         Cancel
       </button>
       <button onclick="createJob()"
-        class="w-1/2 bg-blue-600 text-white py-2 rounded">
+        class="w-1/2 bg-blue-600 text-white py-2 rounded-lg">
         Save
       </button>
     </div>
   </div>
-</div>
-
-<!-- NOTIFICATION -->
-<div id="notification"
-  class="fixed top-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hidden">
-  ✅ New Job Created
-</div>
-
-<!-- BOTTOM NAV (Mobile Style) -->
-<div class="fixed bottom-0 left-0 right-0 bg-white shadow-inner p-3 flex justify-around text-sm">
-  <div class="text-blue-600">🏠 Home</div>
-  <div>📋 Jobs</div>
-  <div>🔔 Alerts</div>
-  <div>👤 Profile</div>
 </div>
 
 <script>
@@ -110,13 +96,6 @@ function closeModal() {
   modal.classList.add("hidden");
 }
 
-function showNotification() {
-  notification.classList.remove("hidden");
-  setTimeout(() => {
-    notification.classList.add("hidden");
-  }, 2000);
-}
-
 function createJob() {
   if (!flat.value || !issue.value) return alert("Fill all fields");
 
@@ -134,7 +113,6 @@ function createJob() {
   flat.value = "";
   issue.value = "";
   closeModal();
-  showNotification();
   loadJobs();
 }
 
@@ -150,40 +128,39 @@ function loadJobs() {
   jobs.slice().reverse().forEach((job, index) => {
 
     let priorityColor =
-      job.priority === "High" ? "bg-red-100 text-red-600" :
-      job.priority === "Medium" ? "bg-yellow-100 text-yellow-600" :
-      "bg-green-100 text-green-600";
+      job.priority === "High" ? "bg-red-500" :
+      job.priority === "Medium" ? "bg-yellow-500" :
+      "bg-green-500";
 
     let statusColor =
-      job.status === "Completed" ? "bg-green-100 text-green-600" :
-      job.status === "In Progress" ? "bg-blue-100 text-blue-600" :
-      "bg-gray-100 text-gray-600";
+      job.status === "Completed" ? "bg-green-500" :
+      job.status === "In Progress" ? "bg-blue-500" :
+      "bg-gray-500";
 
     container.innerHTML += `
-      <div class="bg-white p-4 rounded-xl shadow">
+      <div class="bg-white p-4 rounded-2xl shadow-md">
         <div class="flex justify-between items-center mb-2">
-          <div>
-            <h3 class="font-bold">${job.flat}</h3>
-            <p class="text-sm text-gray-500">${job.issue}</p>
-          </div>
-          <span class="text-xs px-3 py-1 rounded-full ${statusColor}">
+          <h3 class="font-semibold text-lg">${job.flat}</h3>
+          <span class="text-white text-xs px-3 py-1 rounded-full ${statusColor}">
             ${job.status}
           </span>
         </div>
 
-        <div class="flex justify-between items-center mt-3">
-          <span class="text-xs px-3 py-1 rounded-full ${priorityColor}">
+        <p class="text-gray-600 mb-3">${job.issue}</p>
+
+        <div class="flex justify-between items-center">
+          <span class="text-white text-xs px-3 py-1 rounded-full ${priorityColor}">
             ${job.priority}
           </span>
 
           <button onclick="changeStatus(${jobs.length - 1 - index})"
-            class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-            Change Status
+            class="text-blue-600 text-sm font-medium">
+            Change
           </button>
         </div>
 
-        <p class="text-xs text-gray-400 mt-2">
-          ⏰ ${job.time}
+        <p class="text-xs text-gray-400 mt-3">
+          🕒 ${job.time}
         </p>
       </div>
     `;
