@@ -1,85 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>MR Maintenance</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-
-<body>
-
-<header>
-  <h1>🏢 MR Maintenance</h1>
-  <span>Admin Panel</span>
-</header>
-
-<section class="stats">
-  <div>
-    <h2 id="totalJobs">0</h2>
-    <p>Total</p>
-  </div>
-  <div>
-    <h2 id="openJobs">0</h2>
-    <p>Open</p>
-  </div>
-  <div>
-    <h2 id="completedJobs">0</h2>
-    <p>Done</p>
-  </div>
-</section>
-
-<div class="filter-bar">
-  <button onclick="filterBuilding('ALL')">All</button>
-  <button onclick="filterBuilding('ESR')">ESR</button>
-  <button onclick="filterBuilding('CALIFORNIA')">CALIFORNIA</button>
-  <button onclick="filterBuilding('G+9')">G+9</button>
-  <button onclick="filterBuilding('G+7')">G+7</button>
-</div>
-
-<section id="jobList" class="job-list"></section>
-
-<button class="fab" onclick="openModal()">+</button>
-
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3>Create Job</h3>
-
-    <select id="building">
-      <option value="ESR">ESR</option>
-      <option value="CALIFORNIA">CALIFORNIA</option>
-      <option value="G+9">G+9</option>
-      <option value="G+7">G+7</option>
-    </select>
-
-    <input id="flat" placeholder="Flat (A-203)">
-    <input id="issue" placeholder="Issue">
-
-    <textarea id="notes" placeholder="Notes..."></textarea>
-
-    <input type="file" id="image" accept="image/*">
-
-    <select id="priority">
-      <option>High</option>
-      <option>Medium</option>
-      <option>Low</option>
-    </select>
-
-    <div class="modal-buttons">
-      <button onclick="closeModal()">Cancel</button>
-      <button class="primary" onclick="createJob()">Save</button>
-    </div>
-  </div>
-</div>
-
-<nav class="bottom-nav">
-  <div class="active">Home</div>
-  <div>Jobs</div>
-  <div>Alerts</div>
-  <div>Profile</div>
-</nav>
-
-<script src="script.js"></script>
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Technician Maintenance System</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
