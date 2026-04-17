@@ -1,0 +1,10 @@
+create table jobs (
+  id uuid default uuid_generate_v4() primary key,
+  flat text,
+  building text,
+  issue text,
+  priority text,
+  status text default 'New',
+  assigned_to text,
+  created_at timestamp default now()
+);

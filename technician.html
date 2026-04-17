@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Technician Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<div class="flex justify-between mb-6">
+  <h1 class="text-3xl font-bold">Technician Dashboard</h1>
+  <a href="index.html"
+    class="bg-gray-600 text-white px-4 py-2 rounded">
+    Back
+  </a>
+</div>
+
+<h2 class="text-xl font-bold mb-3">Assigned Jobs</h2>
+<div id="jobs"></div>
+
+<script>
+function loadJobs() {
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+  const container = document.getElementById("jobs");
+  container.innerHTML = "";
+
+  jobs.forEach((job, index) => {
+    container.innerHTML += `
+      <div class="bg-white p-4 rounded shadow mb-3">
+        <div class="flex justify-between">
+          <h3 class="font-bold">${job.flat}</h3>
+          <span class="${job.status === 'Completed' ? 'text-green-600' : 'text-blue-600'}">
+            ${job.status}
+          </span>
+        </div>
+        <p>${job.issue}</p>
+        <p class="text-sm">Priority: ${job.priority}</p>
+
+        ${job.status !== "Completed" ? `
+        <button onclick="completeJob(${index})"
+          class="mt-2 bg-green-500 text-white px-3 py-1 rounded">
+          Mark Completed
+        </button>` : ""}
+      </div>
+    `;
+  });
+}
+
+function completeJob(index) {
+  let jobs = JSON.parse(localStorage.getItem("jobs"));
+  jobs[index].status = "Completed";
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+  loadJobs();
+}
+
+loadJobs();
+</script>
+
+</body>
+</html>

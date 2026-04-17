@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<div class="flex justify-between mb-6">
+  <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+  <a href="index.html"
+    class="bg-gray-600 text-white px-4 py-2 rounded">
+    Back
+  </a>
+</div>
+
+<div class="bg-white p-4 rounded shadow mb-6">
+  <h2 class="font-bold mb-3">Create Job</h2>
+
+  <input id="flat" placeholder="Flat (A-203)"
+    class="border p-2 w-full mb-2 rounded">
+
+  <input id="issue" placeholder="Issue (Water Leak)"
+    class="border p-2 w-full mb-2 rounded">
+
+  <select id="priority"
+    class="border p-2 w-full mb-3 rounded">
+    <option>High</option>
+    <option>Medium</option>
+    <option>Low</option>
+  </select>
+
+  <button onclick="createJob()"
+    class="bg-blue-600 text-white w-full py-2 rounded">
+    Create Job
+  </button>
+</div>
+
+<h2 class="text-xl font-bold mb-3">All Jobs</h2>
+<div id="jobs"></div>
+
+<script>
+function createJob() {
+  const job = {
+    flat: flat.value,
+    issue: issue.value,
+    priority: priority.value,
+    status: "Open"
+  };
+
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+  jobs.push(job);
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+
+  flat.value = "";
+  issue.value = "";
+
+  loadJobs();
+}
+
+function loadJobs() {
+  let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+  const container = document.getElementById("jobs");
+  container.innerHTML = "";
+
+  jobs.forEach((job, index) => {
+    container.innerHTML += `
+      <div class="bg-white p-4 rounded shadow mb-3">
+        <div class="flex justify-between">
+          <h3 class="font-bold">${job.flat}</h3>
+          <span class="${job.status === 'Completed' ? 'text-green-600' : 'text-blue-600'}">
+            ${job.status}
+          </span>
+        </div>
+        <p>${job.issue}</p>
+        <p class="text-sm">Priority: ${job.priority}</p>
+
+        ${job.status !== "Completed" ? `
+        <button onclick="completeJob(${index})"
+          class="mt-2 bg-green-500 text-white px-3 py-1 rounded">
+          Mark Completed
+        </button>` : ""}
+      </div>
+    `;
+  });
+}
+
+function completeJob(index) {
+  let jobs = JSON.parse(localStorage.getItem("jobs"));
+  jobs[index].status = "Completed";
+  localStorage.setItem("jobs", JSON.stringify(jobs));
+  loadJobs();
+}
+
+loadJobs();
+</script>
+
+</body>
+</html>
